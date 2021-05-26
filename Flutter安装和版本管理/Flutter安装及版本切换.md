@@ -298,7 +298,7 @@ iOS 壳工程执行 pod install 报错找不到  `Flutter.framework`。
 
 upgrade到2.0.4，再downgrade回1.22.6，编译没问题，但是启动运行一直报错：
 
-![DartError#80%](/download/attachments/673332863/image-1622069314592.png?version=1&modificationDate=1622069314672&api=v2)
+![DartError](https://img-blog.csdnimg.cn/20210527071249696.png#pic_center)
 
 参考 [Flutter iOS 混合开发](https://www.jianshu.com/p/93fa2c90bed3)：
 
