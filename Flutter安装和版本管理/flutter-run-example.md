@@ -20,6 +20,31 @@ dev_dependencies:
     path: ../
 ```
 
+---
+
+[flutter_smart_dialog](https://pub.dev/packages/flutter_smart_dialog) 样例  `example/pubspec.yaml` 如下：
+
+```
+dependencies:
+
+  flutter_smart_dialog:
+    path: ..\..\flutter_smart_dialog
+
+```
+
+macOS 下可修改为：
+
+```
+dependencies:
+
+  flutter_smart_dialog:
+    path: ../
+
+  # 或者
+  # flutter_smart_dialog: ^2.0.5
+
+```
+
 ## oktoast 插件 example 无法运行
 
 从 github 下载 [oktoast](https://pub.dev/packages/oktoast) 源码到本地，example 编译报错：
