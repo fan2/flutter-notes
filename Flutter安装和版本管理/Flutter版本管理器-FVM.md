@@ -1,4 +1,7 @@
-[TOC]
+
+在上一篇 [Flutter安装及版本切换](https://blog.csdn.net/phunxm/article/details/117316761) 中，主要介绍了 Flutter SDK 的安装以及通过 git 命令行切换 Flutter SDK 版本。命令行切换成本较高，且经常会遇到各种工具链问题。
+
+类似 [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)、[RVM](http://rvm.io/)、[NVM](https://github.com/nvm-sh/nvm) 等各种 VM（Version Manager），Flutter 领域也有 `FVM`，提供了便利的 per-project 配置和 global 版本管理功能。
 
 ## fvm
 
@@ -6,10 +9,12 @@
 
 `FVM` helps with the need for consistent app builds by referencing the Flutter SDK version used on a per-project basis. It also allows you to have multiple Flutter versions installed to quickly validate and test upcoming Flutter releases with your apps without waiting for Flutter installation every time.
 
-可搭配 GUI 版本管理工具 [Sidekick](https://github.com/leoafarias/sidekick) 服用。
-
-- [fvm管理flutter多版本](https://www.zhihu.com/zvideo/1337064146592608256)  
+- [Flutter 多个版本切换控制](https://mp.weixin.qq.com/s/fxEgIw521W707yDu2VJBTw)  
 - [用fvm管理多个Flutter SDK](https://mp.weixin.qq.com/s/NG5llgedIjP316uZwa-QGw)  
+- [win10使用fvm切换Flutter版本](https://blog.csdn.net/PyMuma/article/details/115298645)  
+
+下文主要串讲通过 fvm 命令下载和切换 Flutter SDK 的操作流程。
+如嫌命令行麻烦，也可改用 GUI 版的管理工具 [Sidekick](https://github.com/leoafarias/sidekick)。
 
 ### 安装 fvm
 
@@ -149,7 +154,7 @@ Project now uses Flutter [stable]
 
 ---
 
-在当前项目目录下执行 `fvm list`，对当前正在使用的 flutter SDK 版本会有 `active` 标记：
+在当前项目目录下执行 `fvm list`，当前正在使用的 flutter SDK 版本将会标识为 *active*：
 
 ```
 fantasy@MBP ~/Projects//my_flutter_project $ fvm list
@@ -297,15 +302,53 @@ fvm flavor {flavor_name}
 
 ## fvm global
 
-可考虑 `fvm global 1.22.6` 将 1.22.6 设置为全局版本。
+如果APP目前还未完成适配flutter 2.0，暂时可将 1.22.6 设置为全局主力版本。
 
-这样 `flutter --version` 默认就是显示 `Flutter 1.22.6, Dart 2.10.5`。
+执行 `fvm global 1.22.6`，提示需要将相关路径添加到 PATH：
+
+```
+fantasy@MBP ~ $ fvm global 1.22.6
+Flutter "1.22.6" has been set as global
+However your "flutter" path current points to:
+
+.
+to use global Flutter SDK through FVM you should change it to:
+
+/Users/fantasy/fvm/default/bin
+```
+
+`vim ~/.zshrc` 打开编辑 zsh 配置，将 default Flutter SDK 可执行文件所在路径添加到环境变量 PATH：
+
+```
+export PATH=$HOME/fvm/default/bin:$PATH
+```
+
+> 进入 `～/fvm` 目录可以看到，default 实际上是 `versions/1.22.6` 的替身软链。
+
+如果iOS工程报以下错误，考虑执行 `flutter precache` 重拉工具链解决。
+
+```
+[!] Invalid `Podfile` file: No such file or directory @ rb_file_s_stat - /Users/fantasy/fvm/versions/1.22.6/bin/cache/artifacts/engine/ios/Flutter.framework.
+```
+
+重新执行 `fvm list`，可以看到 1.22.6 已经被标识为 *global*：
+
+```
+fantasy@MBP ~ $ fvm list
+Cache Directory:  /Users/fantasy/fvm/versions
+
+stable
+beta
+1.22.6 (global)
+```
+
+此时，执行 `flutter --version`，将显示全局版本为 `Flutter 1.22.6, Dart 2.10.5`。
 
 ## fvm taps
 
 以下梳理网上比较常见的两个民间 fvm，可选使用。
 
-#### dashixiong91
+### dashixiong91
 
 [基于 Flutter 的⼩程序框架实践](https://techsummit.ctrip.com/pdf/renyujie.pdf) 文末介绍 <s>xinfeng-tech/fvm</s>
 
@@ -324,7 +367,7 @@ brew install fvm
 - [使用fvm助力你吃上Flutter2](https://juejin.cn/post/6948266183397212174) - vscode 配置  
 - [FVM - Mac上管理 Flutter 多版本的神器](https://juejin.cn/post/6939712499465846798) - Android Studio 配置  
 
-#### befovy
+### befovy
 
 [go-fvm：flutter 版本切换助手](https://www.lmonkey.com/t/oZBdajkEp)：[befovy / fvm](https://github.com/befovy/fvm)
 
