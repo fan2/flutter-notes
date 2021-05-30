@@ -1,8 +1,11 @@
-[TOC]
 
 ## flutter安装
 
-有两种安装方式：git clone 和 macOS brew install。
+一般有两种安装方式：git clone 和 包管理器。主流平台的包管理器如下：
+
+- macOS：[Homebrew](https://brew.sh/)；  
+- windows：[Chocolatey](https://chocolatey.org/)、[Scoop](https://github.com/lukesampson/scoop)；  
+- linux：DPKG - [APT](https://wiki.debian.org/apt-get)、RPM - [YUM](https://www.man7.org/linux/man-pages/man8/yum.8.html)。
 
 ### 推荐安装方式（克隆仓库）
 
@@ -90,7 +93,7 @@ flutter release 发版一般都会有对应的tag，cd进入本地 flutter git �
 
 ```
 $ cd ~/Library/Developer/flutter # cd /usr/local/Caskroom/flutter/1.22.6/flutter/
-$ git tag | sort | grep '^1\.*\|^2\.*'
+$ git tag -l | sort | grep '^1\.*\|^2\.*'
 # 此处省略部分低版本输出
 1.22.1
 1.22.2
@@ -146,7 +149,8 @@ $ git tag | sort | grep '^1\.*\|^2\.*'
 
 ## flutter切换版本
 
-强烈建议采用 `FVM`，参考 [Flutter版本管理器-FVM](url)。
+以下讲解通过 git 命令行工具手动切换 Flutter SDK 版本。
+强烈建议采用 `FVM` 管理切换 Flutter SDK，参考 [Flutter版本管理器-FVM](https://blog.csdn.net/phunxm/article/details/117317291)。
 
 ### downgrade
 
@@ -297,8 +301,8 @@ iOS 壳工程执行 pod install 报错找不到  `Flutter.framework`。
 ### 运行报错 Dart Error: Can't load Kernel binary
 
 upgrade到2.0.4，再downgrade回1.22.6，编译没问题，但是启动运行一直报错：
-
 ![DartError](https://img-blog.csdnimg.cn/20210527071249696.png#pic_center)
+
 
 参考 [Flutter iOS 混合开发](https://www.jianshu.com/p/93fa2c90bed3)：
 
@@ -316,3 +320,6 @@ upgrade到2.0.4，再downgrade回1.22.6，编译没问题，但是启动运行�
 [How to downgrade Flutter SDK (Dart 1.x)](https://stackoverflow.com/questions/49468321/how-to-downgrade-flutter-sdk-dart-1-x)  
 [Flutter cannot downgrade SDK version from 1.22.x to 1.20.0 #65175](https://github.com/flutter/flutter/issues/65175)  
 [Flutter-常见问题](https://blog.csdn.net/zhanshenzhi2008/article/details/109487912)  
+
+Flutter环境配置遇到的坑：[一](https://blog.csdn.net/wwp9527/article/details/83589353)、[二](https://blog.csdn.net/wwp9527/article/details/113120829)  
+[flutter提示AndroidStudio4.1没有安装flutter插件](https://blog.csdn.net/kaixinlaok/article/details/110522275)  
