@@ -9,7 +9,7 @@
 
 `FVM` helps with the need for consistent app builds by referencing the Flutter SDK version used on a per-project basis. It also allows you to have multiple Flutter versions installed to quickly validate and test upcoming Flutter releases with your apps without waiting for Flutter installation every time.
 
-- [Flutter 多个版本切换控制](https://mp.weixin.qq.com/s/fxEgIw521W707yDu2VJBTw)  
+- [Flutter 多个版本切换控制](https://ducafecat.tech/2021/05/07/translation/flutter-how-to-fluttering-from-one-version-to-other-versions/)  
 - [用fvm管理多个Flutter SDK](https://mp.weixin.qq.com/s/NG5llgedIjP316uZwa-QGw)  
 - [win10使用fvm切换Flutter版本](https://blog.csdn.net/PyMuma/article/details/115298645)  
 
@@ -378,5 +378,5 @@ brew tap befovy/taps
 brew install fvm
 ```
 
-[使用fvm 管理多版本flutter](https://www.jianshu.com/p/3126b145f93e)  
-[使用Flutter包管理工具fvm过程中遇到的问题](https://www.jianshu.com/p/8f792a4755bf)  
+- [使用fvm 管理多版本flutter](https://www.jianshu.com/p/3126b145f93e)  
+- [使用Flutter包管理工具fvm过程中遇到的问题](https://www.jianshu.com/p/8f792a4755bf)  
