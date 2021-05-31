@@ -135,6 +135,8 @@ dev_dependencies:
 
 5. 打开Xcode工程，配置好签名（Signing），即可编译运行。  
 
+> 完整测试用例参考 [oktoast](https://www.kikt.top/posts/flutter/toast/oktoast/)，部分代码略加修改支持 Null safety 即可运行。
+
 **说明**：如果用 FVM 配置了 per-project 的 flutter SDK，则执行相关 flutter 命令需加上 fvm 代理前缀。例如用 `fvm flutter create example` 代替 `flutter create example`。
 
 ---
