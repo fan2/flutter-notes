@@ -12,6 +12,7 @@
 - [Flutter 多个版本切换控制](https://ducafecat.tech/2021/05/07/translation/flutter-how-to-fluttering-from-one-version-to-other-versions/)  
 - [用fvm管理多个Flutter SDK](https://mp.weixin.qq.com/s/NG5llgedIjP316uZwa-QGw)  
 - [win10使用fvm切换Flutter版本](https://blog.csdn.net/PyMuma/article/details/115298645)  
+- [A Brief Introduction to Flutter Version Management](https://medium.com/embrace-it/a-brief-introduction-to-flutter-version-management-ff240dafdbf6)  
 
 下文主要串讲通过 fvm 命令下载和切换 Flutter SDK 的操作流程。
 如嫌命令行麻烦，也可改用 GUI 版的管理工具 [Sidekick](https://github.com/leoafarias/sidekick)。
@@ -38,9 +39,16 @@ brew untap leoafarias/fvm
 
 参考 [configuration](https://fvm.app/docs/getting_started/configuration)。
 
-安装fvm后，考虑设置环境变量 `FVM_HOME` 或 `FVM_GIT_CACHE`，否则默认安装 flutter SDK 缓存路径为 `~/fvm/versions`；  
+安装fvm后，考虑设置环境变量 `FVM_HOME` 或 `FVM_GIT_CACHE`：
 
-## fvm releases
+```
+// ~/.zshrc
+export FVM_HOME="$HOME/.fvm"
+```
+
+否则默认的 flutter SDK 缓存路径为 `~/fvm/versions`。
+
+## fvm releases list
 
 `fvm releases`: View all Flutter SDK releases available for install.
 
@@ -82,58 +90,60 @@ Apr 29 21  │ 2.2.0-10.2.pre
 Apr 30 21  │ 2.0.6
 May 10 21  │ 2.2.0-10.3.pre
 May 10 21  │ 2.3.0-1.0.pre
---------------------------------------
-May 18 21  │ 2.2.0             stable
---------------------------------------
---------------------------------------
-May 18 21  │ 2.3.0-12.1.pre    dev
---------------------------------------
+May 18 21  │ 2.2.0
+May 18 21  │ 2.3.0-12.1.pre
 --------------------------------------
 May 19 21  │ 2.2.0             beta
 --------------------------------------
+--------------------------------------
+May 27 21  │ 2.2.1             stable
+--------------------------------------
+--------------------------------------
+May 27 21  │ 2.3.0-16.0.pre    dev
+--------------------------------------
 ```
 
-## fvm install
+## fvm install an SDK version
 
 `fvm install`: Installs Flutter SDK Version. Gives you the ability to install Flutter `releases` or `channels`.
 
-- `fvm install dev/beta/stable/...`: 安装指定channel的当前版本 flutter SDK；  
-- `fvm install 2.2.0`: 安装指定版本（2.2.0）的 flutter SDK；  
-
-> 如果没有配置 `FVM_HOME` 或 `FVM_GIT_CACHE` 环境变量，则默认安装到 `~/fvm/versions/` 目录下。
+- `fvm install beta/stable/dev`: 安装指定channel的当前版本 flutter SDK；  
+- `fvm install 1.22.6`: 安装指定版本（1.22.6）的 flutter SDK；  
 
 以下安装指定版本和channel：
 
 - `fvm install 1.22.6`：安装 flutter 2.0 之前最后一个 stable 版本 1.22.6；  
-- `fvm install stable`：由于当前的 stable 为 2.2.0，安装的 stable 等效于 `fvm install 2.2.0`；  
-- `fvm install dev`：安装最新的 dev 2.3.0-12.1.pre 预览版本，以便完成一些实验性功能开发和验证；  
+- `fvm install stable`：如果当前的 stable 为 2.2.1，安装的 stable 等效于 `fvm install 2.2.1`；  
+- `fvm install dev`：安装最新的 dev 2.3.0-16.0.pre 预览版本，以便完成一些实验性功能开发和验证；  
 
-执行了 `fvm install 2.2.0` 后可执行 `fvm remove 2.2.0` 卸载上安装的 2.2.0 版本。
+执行了 `fvm install 2.2.1` 后可执行 `fvm remove 2.2.1` 卸载。
 
 ```
-fantasy@MBP ~ $ tree -L 1 ~/fvm/versions
-/Users/fantasy/fvm/versions
+fantasy@MBP ~ $ tree -L 1 $FVM_HOME/versions
+/Users/fantasy/.fvm/versions
 ├── 1.22.6
+├── beta
 ├── dev
 └── stable
 
-3 directories, 0 files
+4 directories, 0 files
 ```
 
-## fvm list
+## fvm list installed versions
 
 列举查看本地已安装的版本。
 
 ```
 fantasy@MBP ~ $ fvm list
-Cache Directory:  /Users/fantasy/fvm/versions
+Cache Directory:  /Users/fantasy/.fvm/versions
 
 stable
+beta
 dev
 1.22.6
 ```
 
-## fvm use
+## fvm use an SDK version
 
 在当前 flutter_project 目录执行 `fvm use version` 即可切换flutter SDK版本。
 
@@ -148,7 +158,7 @@ fantasy@MBP ~/Projects//my_flutter_project $ fvm use stable
 Project now uses Flutter [stable]
 ```
 
-> 其中 `.fvm/flutter_sdk` 将软链到 `~/fvm/versions/stable`；配置文件 `.fvm/fvm_config.json` 中同步记录了  `"flutterSdkVersion": "stable"`。
+> 其中 `.fvm/flutter_sdk` 将软链到 `~/.fvm/versions/stable`；配置文件 `.fvm/fvm_config.json` 中同步记录了  `"flutterSdkVersion": "stable"`。
 
 接下来，可用 `fvm flutter` 代替 `flutter` 命令，以便自动pick当前repo所用的SDK。
 
@@ -158,9 +168,10 @@ Project now uses Flutter [stable]
 
 ```
 fantasy@MBP ~/Projects//my_flutter_project $ fvm list
-Cache Directory:  /Users/fantasy/fvm/versions
+Cache Directory:  /Users/fantasy/.fvm/versions
 
 stable (active)
+beta
 dev
 1.22.6
 ```
@@ -169,10 +180,10 @@ dev
 
 ```
 fantasy@MBP ~/Projects//my_flutter_project $ fvm flutter --version
-Flutter 2.2.0 • channel stable • https://github.com/flutter/flutter.git
-Framework • revision b22742018b (11 days ago) • 2021-05-14 19:12:57 -0700
-Engine • revision a9d88a4d18
-Tools • Dart 2.13.0
+Flutter 2.2.1 • channel stable • https://github.com/flutter/flutter.git
+Framework • revision 02c026b03c (9 days ago) • 2021-05-27 12:24:44 -0700
+Engine • revision 0fdb562ac8
+Tools • Dart 2.13.1
 ```
 
 执行其他代理命令安装依赖包更新、运行：
@@ -183,7 +194,7 @@ fvm flutter pub get
 fvm flutter run
 ```
 
-## fvm flavor
+## fvm flavor for project
 
 `project flavors`：某个项目外发版本还是用稳定的 1.22.6，但是 flutter 2 的适配工作同步进行中，则可为该项目创建多个 flavor，方便主干和适配分支切换 flavors 中预配的 flutter SDK 版本。
 
@@ -203,6 +214,9 @@ This will pin `version` to `flavor_name`，flavors 映射（flavor_name -> versi
 fantasy@MBP ~/Projects//my_flutter_project $ fvm use 1.22.6 --flavor production
 Project now uses Flutter [1.22.6] on [production] flavor.
 
+fantasy@MBP ~/Projects//my_flutter_project $ fvm use stable --flavor beta
+Project now uses Flutter [beta] on [beta] flavor.
+
 fantasy@MBP ~/Projects//my_flutter_project $ fvm use stable --flavor stable
 Project now uses Flutter [stable] on [stable] flavor.
 
@@ -214,6 +228,7 @@ fantasy@MBP ~/Projects//my_flutter_project $ cat .fvm/fvm_config.json
   "flutterSdkVersion": "stable",
   "flavors": {
     "production": "1.22.6",
+    "beta": "beta",
     "stable": "stable",
     "dev": "dev"
   }
@@ -229,13 +244,14 @@ fantasy@MBP ~/Projects//my_flutter_project $ fvm flavor
 Project flavors configured for "my_flutter_project":
 
 [1] production
-[2] dev
+[2] beta
 [3] stable
+[4] dev
 
 Select an environment: ^C
 ```
 
-按照提示，可在 Select an environment 后面输入 `2` 或 `dev` 切换到 dev 开发环境。如果仅为查看，可按下 Ctrl+C 退出。
+按照提示，可在 Select an environment 后面输入 `2` 或 `beta` 切换到 beta 开发环境。如果仅为查看，可按下 Ctrl+C 退出。
 
 ### Switch flavors
 
@@ -251,7 +267,7 @@ fvm flavor {flavor_name}
 
 > 切换后，`.fvm/fvm_config.json` 中的 flutterSdkVersion 将同步更新为 `1.22.6`。
 
-## IDE配置
+## IDE Configuration
 
 ### vscode
 
@@ -300,7 +316,7 @@ fvm flavor {flavor_name}
 
 参考 [configuration](https://fvm.app/docs/getting_started/configuration)。
 
-## fvm global
+## fvm global SDK version
 
 如果APP目前还未完成适配flutter 2.0，暂时可将 1.22.6 设置为全局主力版本。
 
@@ -328,7 +344,7 @@ export PATH=$HOME/fvm/default/bin:$PATH
 如果iOS工程报以下错误，考虑执行 `flutter precache` 重拉工具链解决。
 
 ```
-[!] Invalid `Podfile` file: No such file or directory @ rb_file_s_stat - /Users/fantasy/fvm/versions/1.22.6/bin/cache/artifacts/engine/ios/Flutter.framework.
+[!] Invalid `Podfile` file: No such file or directory @ rb_file_s_stat - /Users/fantasy/.fvm/versions/1.22.6/bin/cache/artifacts/engine/ios/Flutter.framework.
 ```
 
 重新执行 `fvm list`，可以看到 1.22.6 已经被标识为 *global*：
@@ -343,6 +359,11 @@ beta
 ```
 
 此时，执行 `flutter --version`，将显示全局版本为 `Flutter 1.22.6, Dart 2.10.5`。
+
+## flutter upgrade SDK version
+
+如果通过 fvm global 命令全局指定 flutter SDK 版本（例如 stable），则可调用 `flutter upgrade` 升级到 stable channel 当前最新版本。  
+如果通过 fvm use 命令为当前项目指定特定 flutter SDK 版本（例如 dev），则可调用 `fvm flutter upgrade` 升级对应版本。  
 
 ## fvm taps
 
