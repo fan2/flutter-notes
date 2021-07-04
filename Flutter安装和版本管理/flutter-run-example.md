@@ -20,7 +20,7 @@
 如果当前安装的 flutter SDK 版本过低，考虑使用 [FVM](https://blog.csdn.net/phunxm/article/details/117317291) 切换到插件要求的最低支持版本。
 
 ```
-# Step1: cd进入example目录，执行 pub get 安装flutter package依赖：
+# Step1: 直接在主目录或cd进入example目录，执行 pub get 安装flutter package依赖：
 cd example && flutter pub get
 # Step2: cd进入ios目录，执行 pod install 安装 iOS 原生依赖：
 cd ios && pod install
@@ -130,18 +130,23 @@ dev_dependencies:
 
     - `cp example0/pubspec.yaml example/pubspec.yaml`  
     - `cp -r example0/lib/* example/lib/`  
+    - cp 其他资源文件...  
 
 4. 检查 `example/pubspec.yaml`，在 dependencies 或 dev_dependencies 分组中按需添加 oktoast 插件的本地相对路径。
+5. 由于修改了 `pubspec.yaml` 文件，需重新执行 `flutter pub get` 更新依赖包。  
 
-5. 打开Xcode工程，配置好签名（Signing），即可编译运行。  
+6. 打开Xcode工程，配置好签名（Signing），即可编译运行。  
 
 > 完整测试用例参考 [oktoast](https://www.kikt.top/posts/flutter/toast/oktoast/)，部分代码略加修改支持 Null safety 即可运行。
 
-**说明**：如果用 FVM 配置了 per-project 的 flutter SDK，则执行相关 flutter 命令需加上 fvm 代理前缀。例如用 `fvm flutter create example` 代替 `flutter create example`。
+**说明**：
+
+1. 如果用 FVM 配置了 per-project 的 flutter SDK，则执行相关 flutter 命令需加上 fvm 代理前缀。例如用 `fvm flutter create example` 代替 `flutter create example`。  
+2. 如果 xcodebuild 遇到诸如 `Invalid depfile: ~/oktoast/example/.dart_tool/flutter_build/6f462094efa2e3a279f832b5facc24d0/kernel_snapshot.d` 此类错误，则考虑执行 `flutter clean` 后重新 `flutter pub get`。  
 
 ---
 
-[flutter_styled_toast](https://pub.dev/packages/flutter_styled_toast)、[bot_toast](https://pub.dev/packages/bot_toast)、[flutter_easyloading](https://pub.dev/packages/flutter_easyloading)、[easy_alert](https://pub.dev/packages/easy_alert) 等插件 example 无法运行问题均可参考以上处理。
+[flutter_styled_toast](https://pub.dev/packages/flutter_styled_toast)、[bot_toast](https://pub.dev/packages/bot_toast)、[flutter_easyloading](https://pub.dev/packages/flutter_easyloading)、[easy_alert](https://pub.dev/packages/easy_alert)、[textfield_tags](https://pub.dev/packages/textfield_tags) 等插件 example 无法运行问题均可参考以上处理。
 
 ## 参考
 
